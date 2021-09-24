@@ -105,10 +105,36 @@ temperature_df=temperature_df.replace(duplicates, ['Congo', 'Denmark', 'Falkland
 
 temperature_df['Country'].unique()
 
-#
-!git remote add origin https://github.com/yntgmz/Climate-Change-Forecasting.git
-!git branch -M main
-!git push -u origin main
+# Data Visualization
+
+countries= temperature_df['Country'].unique().tolist()
+mean_temperature=[]
+for i in countries:
+    mean_temperature.append(temperature_df[temperature_df['Country']==i]['AverageTemperature'].mean())
+
+#Plot mean temperatures of countries
+data = [dict(type ='choropleth', 
+             locations = countries, 
+             z= mean_temperature, 
+             locationmode= 'country names')
+        ] 
+
+    
+layout = dict (title = 'Average Global Land Temperatures', 
+               geo =dict(showframe =False, 
+                         showocean =True, 
+                         oceancolor='aqua', 
+                         projection = dict(type = 'orthographic')))
+
+fig =go.Figure(dict(data=data, layout=layout))
+plot(fig)
+py.iplot(fig, validate =False, filename='worldmap')
+
+
+
+#git remote add origin https://github.com/yntgmz/Climate-Change-Forecasting.git
+#git branch -M main
+#git push -u origin main
 
 
 
