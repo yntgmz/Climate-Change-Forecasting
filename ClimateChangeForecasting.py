@@ -435,68 +435,6 @@ pred, original = prediction(model2 , test_x, train_x, US_df)
 
 plot(original)
 
-# Model for Italy Data
-
-Italy_df = temperature_df[temperature_df['Country']=='Italy'].reset_index(drop=True)
-
-Italy_df
-    
-Italy_df = Italy_df.drop(['Country', 'year'], axis=1)
-
-
-Italy_df= prepare_data(Italy_df,3)
-
-Italy_df
-
-Italy_df= Italy_df.dropna().reset_index(drop = True)
-
-# Split the data
-
-train_Italy =Italy_df[:int(0.9 * len(Italy_df))].drop(columns ='dt').values
-test_Italy = Italy_df[int(0.9 * len(Italy_df)):].drop(columns = 'dt').values 
-
-train_Italy.shape
-test_Italy.shape
-
-# Scale the data
-
-scaler = MinMaxScaler(feature_range = (0,1))
-train_Italy = scaler.fit_transform(train_Italy)
-test_Italy = scaler.transform(test_Italy)
-
-# Split the data
-train_Italy_x, train_Italy_y = train_Italy[:,:-1], train_Italy[:, -1]
-test_Italy_x, test_Italy_y = test_Italy[:, :-1], test_Italy[:, -1]
-
-
-#Reshape inputs to be 3d (samples, timestamps, and features)
-
-train_Italy_x = train_Italy_x.reshape((train_Italy_x.shape[0], 1, train_Italy_x.shape[1]))
-
-test_Italy_x = test_Italy_x.reshape((test_Italy_x.shape[0], 1, test_Italy_x.shape[1]))
-
-print(train_Italy_x.shape, train_Italy_y.shape, test_Italy_x.shape, test_Italy_y.shape)
-
-
-
-
-# Prediction for Italy
-model3 = create_model(train_Italy_x)
-model3.summary()
-
-# Fit the network
-history3 = model3.fit(train_Italy_x, train_Italy_y, epochs =50, batch_size =72, validation_data = (test_Italy_x, test_Italy_y), shuffle = False)
-plot_history(history3)
-
-
-# Predict and Assess model performance 
-
-pred, original = prediction(model3 , test_Italy_x, train_Italy_x, Italy_df)
-
-test_Italy_x.shape 
-train_Italy_x.shape
-
-plot(original)
 
 
      
